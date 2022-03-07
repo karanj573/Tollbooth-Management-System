@@ -1,0 +1,43 @@
+create database tollmanagement;
+
+\c tollmanagement
+
+create table admin(id serial primary key,email text unique not null,name text not null,address text not null,password text not null,phone varchar(14) not null);
+
+create table employee(id serial primary key,email text unique not null,name text not null,address text not null,password text not null,phone varchar(14) not null,aid int references admin(id),status varchar(20));
+
+create table price(vehicletype text primary key,singlejourney int,returnjourney int,monthlypass int,commercial int);
+
+insert into price values('car/jeep/van',100,150,3335,50);
+
+insert into price values('LCV',160,245,5395,80);
+
+insert into price values('BUS/TRUCK',340,510,11295,170);
+
+insert into price values('upto 3 axle vehicle',370,555,12320,185);
+
+insert into price values('4 to 6 axle',530,795,17710,265);
+
+insert into price values('HCM/EME',530,795,17710,265);
+
+insert into price values('7 or more axle',645,970,21560,325);
+
+create table entry(id serial primary key,vehicletype text references price(vehicletype),numberplate text,date date,time time,journeytype text,eid int references employee(id));
+
+create table payment(id serial primary key,eid int references entry(id));
+
+tollmanagement=# \d
+               List of relations
+ Schema |      Name       |   Type   |  Owner
+--------+-----------------+----------+----------
+ public | admin           | table    | postgres
+ public | admin_id_seq    | sequence | postgres
+ public | employee        | table    | postgres
+ public | employee_id_seq | sequence | postgres
+ public | entry           | table    | postgres
+ public | entry_id_seq    | sequence | postgres
+ public | payment         | table    | postgres
+ public | payment_id_seq  | sequence | postgres
+ public | price           | table    | postgres
+(9 rows)
+
